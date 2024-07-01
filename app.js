@@ -1,10 +1,10 @@
 const express = require('express')
-const { getLogin } = require('./controllers/getLogin')
+const { postUser } = require('./controllers/users.controllers')
 
 const app = express()
 
 app.use(express.json())
 
-app.get('/api/users', getUsers)
+app.post('/api/users', postUser)
 
-app.post('/api/users', )
+module.exports = app
