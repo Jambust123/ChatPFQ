@@ -11,6 +11,6 @@ exports.createUser = async (username, password, isAdmin) => {
         })
         return insertedUser
     } catch (error) {
-       console.log(error) 
+       throw error
     }
 }
