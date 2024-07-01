@@ -22,12 +22,12 @@ const client = new MongoClient(mongoUri, {
 
 async function connect() {
     await client.connect()
-    console.log('Connected to DB')
+    //console.log('Connected to DB')
 }
 
 async function close() {
     await client.close()
-    console.log('MongoDB connection closed')
+    //console.log('MongoDB connection closed')
 }
 
 module.exports = {
