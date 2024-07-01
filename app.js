@@ -7,4 +7,16 @@ app.use(express.json())
 
 app.post('/api/users', postUser)
 
+app.use((error, req, res, next) => {
+    const { errorResponse } = error
+
+    if (errorResponse.code === 11000) {
+        res.status(400).send({
+            msg: 'Username already taken'
+        })
+    }
+
+    next(error)
+})
+
 module.exports = app
