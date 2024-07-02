@@ -13,5 +13,8 @@
     "test": "jest",
     "seed": "node ./db/run-seed.js"
   },
+  "jest": {
+    "verbose": true
+  },
   "main": "listen.js"
 }

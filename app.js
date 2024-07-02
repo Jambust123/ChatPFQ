@@ -1,11 +1,6 @@
-const express = require("express");
-const {
-  postUser,
-  getUsers,
-  getUserById,
-} = require("./controllers/users.controllers");
-const { postMessage } = require("./controllers/messages.controllers");
-const { errorMonitor } = require("supertest/lib/test");
+const express = require('express')
+const { postUser, getUsers, getUserById } = require('./controllers/users.controllers')
+const { postMessage, getAllMessages } = require('./controllers/messages.controllers')
 
 const app = express();
 
@@ -17,9 +12,10 @@ app.get("/api/users/:username", getUserById);
 
 app.post("/api/users", postUser);
 
-app.post(`/api/messages`, postMessage);
+app.post(`/api/messages`, postMessage)
 
-// error handler for MongoDB
+app.get('/api/messages', getAllMessages)
+
 app.use((error, req, res, next) => {
   if (error.errorResponse) {
     const { errorResponse } = error;
