@@ -1,11 +1,14 @@
 const express = require('express')
 const { postUser } = require('./controllers/users.controllers')
+const { postMessage } = require('./controllers/messages.controllers')
 
 const app = express()
 
 app.use(express.json())
 
 app.post('/api/users', postUser)
+
+app.post(`/api/messages`, postMessage)
 
 app.use((error, req, res, next) => {
     const { errorResponse } = error
