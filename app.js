@@ -1,10 +1,12 @@
 const express = require('express')
-const { postUser } = require('./controllers/users.controllers')
+const { postUser, getUsers } = require('./controllers/users.controllers')
 const { postMessage } = require('./controllers/messages.controllers')
 
 const app = express()
 
 app.use(express.json())
+
+app.get('/api/users', getUsers)
 
 app.post('/api/users', postUser)
 
