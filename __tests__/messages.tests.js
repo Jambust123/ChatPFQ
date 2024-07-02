@@ -100,7 +100,16 @@ describe("getAllMessagesFromUser", () => {
       });
     });
   });
+  it('should 404 return not found if user does not exist', async () => {
+    const { body } = await request(app)
+    .get("/api/messages?username=banana")
+    .expect(404);
+    console.log(body);
 
+    expect(body.msg).toBe(
+       'No messages found for user: banana'
+    )
+  });
 });
 
 
@@ -124,4 +133,14 @@ describe('getAllMessagesBycategory', () => {
           })
         })
     });
+    it('should 404 return not found if category does not exist', async () => {
+        const { body } = await request(app)
+        .get("/api/messages?category=banana")
+        .expect(404);
+        console.log(body);
+    
+        expect(body.msg).toBe(
+           'No messages found for category: banana'
+        )
+      });
 });
