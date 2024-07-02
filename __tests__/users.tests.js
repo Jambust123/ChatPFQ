@@ -47,3 +47,44 @@ describe('postUser', () => {
             expect(res.body.msg).toBe('Username already taken')        
     });
 });
+
+describe('getUsers', () => {
+    it('should 200 and return all users when requested', async () => {
+        const { body } = await request(app)
+        .get('/api/users')
+        .expect(200)
+        
+        expect(body).toHaveLength(100)
+        body.forEach((user) => {
+            expect(user).toMatchObject({
+                username: expect.any(String),
+                password: expect.any(String),
+                isAdmin: expect.any(Boolean)
+            })
+        })
+    });
+});
+
+describe('getUserById', () => {
+    it('should 200 and return a specific user', async () => {
+        const input = {
+            username: 'jake',
+            password: 'liam',
+            isAdmin: true
+        }
+    
+        await request(app)
+        .post('/api/users')
+        .send(input)
+        
+        const { body } = await request(app)
+        .get('/api/users?username=jake')
+        .expect(200)
+
+        expect(body).toMatchObject({
+            username: 'jake',
+            password: 'liam',
+            isAdmin: true
+        })
+    });
+});
