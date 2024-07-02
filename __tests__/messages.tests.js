@@ -100,6 +100,28 @@ describe("getAllMessagesFromUser", () => {
       });
     });
   });
+
 });
 
 
+describe('getAllMessagesBycategory', () => {
+    it('should 200 return all messages from category', async () => {
+
+        const { body } = await request(app)
+        .get('/api/messages?category=Service')
+        .expect(200)
+
+        body.forEach((user) => {
+            expect(user).toMatchObject({
+            _id: expect.any(String),
+            body: expect.any(String),
+            from: expect.any(String),
+            to: expect.any(String),
+            category: "Service",
+            sentiment: "negative",
+            isClosed: false,
+            table: expect.any(Number),
+          })
+        })
+    });
+});

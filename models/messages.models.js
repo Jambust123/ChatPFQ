@@ -21,7 +21,7 @@ exports.createMessage = async (message) => {
     }
 }
 
-exports.fetchAllMessages = async (username) => {
+exports.fetchAllMessages = async (username, category) => {
     try {
         const db = client.db('ChatPFQ')
         const collection = db.collection('messages')
@@ -31,9 +31,13 @@ exports.fetchAllMessages = async (username) => {
             $or: [{ to: username }, { from: username }]
         }).toArray()
 
+        } else if(category){
+
+            return allMessages = await collection.find({ category: category }).toArray()
+
         } else {
 
-            return allMessages = await collection.find().toArray()
+            return allMessages = await collection.find({}).toArray()
 
         }
 
