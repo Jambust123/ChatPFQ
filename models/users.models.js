@@ -14,3 +14,18 @@ exports.createUser = async (username, password, isAdmin) => {
        throw error
     }
 }
+
+exports.fetchUsers = async () => {
+    try {
+        const db = client.db('ChatPFQ');
+        const collection = db.collection('users');
+        const results = collection.find({});
+        return await results.toArray()
+    } catch (error) {
+       throw error
+    }
+}
+
+exports.fetchUserById = async () => {
+    
+}
