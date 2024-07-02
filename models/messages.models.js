@@ -1,47 +1,50 @@
-const { client } = require('../db/connection')
-
+const { client } = require("../db/connection");
 
 exports.createMessage = async (message) => {
-    try {
-        const db = client.db('ChatPFQ')
-        const collection = db.collection('messages')
-        const insertedMessage = await collection.insertOne({
-            body: message.body,
-            from: message.from,
-            to: message.to,
-            created_at: new Date(),
-            category: message.category,
-            sentiment: message.sentiment,
-            isClosed: message.isClosed,
-            table: message.table
-        })
-        return insertedMessage
-    } catch (error) {
-        throw error
-    }
-}
+  try {
+    const db = client.db("ChatPFQ");
+    const collection = db.collection("messages");
+    const insertedMessage = await collection.insertOne({
+      body: message.body,
+      from: message.from,
+      to: message.to,
+      created_at: new Date(),
+      category: message.category,
+      sentiment: message.sentiment,
+      isClosed: message.isClosed,
+      table: message.table,
+    });
+    return insertedMessage;
+  } catch (error) {
+    throw error;
+  }
+};
 
 exports.fetchAllMessages = async (username, category) => {
-    try {
-        const db = client.db('ChatPFQ')
-        const collection = db.collection('messages')
-        if(username){
-        
-        return allMessages = await collection.find({
-            $or: [{ to: username }, { from: username }]
-        }).toArray()
+  try {
+    const db = client.db("ChatPFQ");
+    const collection = db.collection("messages");
+    let query = {};
 
-        } else if(category){
-
-            return allMessages = await collection.find({ category: category }).toArray()
-
-        } else {
-
-            return allMessages = await collection.find({}).toArray()
-
-        }
-
-    } catch (error) {
-        throw error
+    if (username) {
+      query = { $or: [{ to: username }, { from: username }] };
+    } else if (category) {
+      query = { category: category };
     }
-}
+
+    const allMessages = await collection.find(query).toArray();
+
+    if ((username || category) && allMessages.length === 0) {
+      return Promise.reject({
+        status: 404,
+        msg: `No messages found for ${
+          username ? `user: ${username}` : `category: ${category}`
+        }`,
+      });
+    }
+
+    return allMessages;
+  } catch (error) {
+    throw error;
+  }
+};
