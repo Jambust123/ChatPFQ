@@ -2,10 +2,6 @@
 const { faker } = require("@faker-js/faker");
 const { client, connect, close } = require('./connection')
 
-function randomIntFromInterval(min, max) { // min and max included 
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
 exports.seedDB = async () => {
 
     try {
