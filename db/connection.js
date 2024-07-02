@@ -1,37 +1,46 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const path = require('path');
-const dotenv = require('dotenv');
+const { MongoClient, ServerApiVersion } = require("mongodb");
+const path = require("path");
+const dotenv = require("dotenv");
 
 // Determine the current environment
-const ENV = process.env.NODE_ENV || 'development'
+const ENV = process.env.NODE_ENV || "development";
 
 // Load the appropriate .env file
 dotenv.config({ path: path.resolve(__dirname, `../.env.${ENV}`) });
 
 const mongoUri = process.env.MONGODB_URI;
 
-const dbName = 'ChatPFQ'
+const dbName = "ChatPFQ";
 
-const client = new MongoClient(mongoUri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-})
+let client;
 
 async function connect() {
-    await client.connect()
-    //console.log('Connected to DB')
+  if (!client) {
+    client = new MongoClient(mongoUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    await client.connect();
+  }
+  return client;
 }
 
 async function close() {
-    await client.close()
-    //console.log('MongoDB connection closed')
+  if (client) {
+    await client.close();
+    client = undefined;
+  }
+}
+
+function getClient() {
+  if (!client) {
+    throw new Error('MongoDB client is not initialized.');
+  }
+  return client;
 }
 
 module.exports = {
-    client,
-    connect,
-    close
-}
+  connect,
+  close,
+  getClient,
+};

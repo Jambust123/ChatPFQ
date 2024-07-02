@@ -1,7 +1,12 @@
-const { client, close } = require("../db/connection");
 const app = require("../app");
 const request = require("supertest");
-const { seedDB } = require("../db/seed");
+
+const { connect, close } = require('../db/connection');
+const { seedDB } = require('../db/seed');
+
+beforeAll(async () => {
+  await connect();
+});
 
 beforeEach(async () => {
   await seedDB();
