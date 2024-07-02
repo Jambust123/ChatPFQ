@@ -36,6 +36,24 @@ exports.seedDB = async () => {
         const fakeUsers = faker.helpers.multiple(createRandomUser, {count: 100})
         await usersCollection.insertMany(fakeUsers)
 
+
+        function createRandomMessage() {
+            const message = {
+                    body: faker.lorem.sentence(),
+                    from: faker.internet.userName(),
+                    to: 'admin',
+                    category: 'Service',
+                    sentiment: 'negative',
+                    isClosed: false,
+                    table: faker.number.bigInt({ min: 1, max: 50 })
+            }
+
+            return message
+        }
+
+        const fakeMessages = faker.helpers.multiple(createRandomMessage, {count: 100})
+        await messagesCollection.insertMany(fakeMessages)
+
     } catch (err) {
         console.log(err.stack);
     }

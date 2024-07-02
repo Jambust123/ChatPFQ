@@ -20,3 +20,15 @@ exports.createMessage = async (message) => {
         throw error
     }
 }
+
+exports.fetchAllMessages = async () => {
+    try {
+        const db = client.db('ChatPFQ')
+        const collection = db.collection('messages')
+        const allMessages = await collection.find().toArray()
+        
+        return allMessages
+    } catch (error) {
+        throw error
+    }
+}
