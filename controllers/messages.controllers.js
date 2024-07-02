@@ -12,7 +12,8 @@ exports.postMessage = async (req, res, next) => {
 
 exports.getAllMessages = async (req, res, next) => {
     try {
-        const messages = await fetchAllMessages()
+        const { username } = req.query
+        const messages = await fetchAllMessages(username)
 
         res.status(200).send(messages)
     } catch (error) {
