@@ -1,7 +1,8 @@
-const { client } = require("../db/connection");
+const { getClient } = require("../db/connection");
 
 exports.createMessage = async (message) => {
   try {
+    const client = await getClient()
     const db = client.db("ChatPFQ");
     const collection = db.collection("messages");
     const insertedMessage = await collection.insertOne({
@@ -22,6 +23,7 @@ exports.createMessage = async (message) => {
 
 exports.fetchAllMessages = async (username, category) => {
   try {
+    const client = await getClient();
     const db = client.db("ChatPFQ");
     const collection = db.collection("messages");
     let query = {};
@@ -35,12 +37,7 @@ exports.fetchAllMessages = async (username, category) => {
     const allMessages = await collection.find(query).toArray();
 
     if ((username || category) && allMessages.length === 0) {
-      return Promise.reject({
-        status: 404,
-        msg: `No messages found for ${
-          username ? `user: ${username}` : `category: ${category}`
-        }`,
-      });
+      throw { status: 404, msg: `No messages found for ${username ? `user: ${username}` : `category: ${category}`}` };
     }
 
     return allMessages;

@@ -1,21 +1,21 @@
 // require the necessary libraries
 const { faker } = require("@faker-js/faker");
-const { client, connect, close } = require('./connection')
+const { getClient } = require("./connection");
 
 exports.seedDB = async () => {
 
     try {
-        await connect();
-        //console.log("Connected correctly to server");
+        const client = getClient()
+        const db = client.db("ChatPFQ")
 
-        const usersCollection = client.db("ChatPFQ").collection('users');
-        const messagesCollection = client.db("ChatPFQ").collection('messages');
+        const usersCollection = db.collection('users');
+        const messagesCollection = db.collection('messages');
 
         // The drop() command destroys all data from a collection and deletes the collection.
         // Make sure you run it against proper database and collection.
 
-        usersCollection.drop(); //dropping all collections in ChatPFQ
-        messagesCollection.drop()
+        await usersCollection.drop(); //dropping all collections in ChatPFQ
+        await messagesCollection.drop()
 
         //Create the collections again, and add an index to the users collection to enforce unique values
         await client.db('ChatPFQ').createCollection('users')

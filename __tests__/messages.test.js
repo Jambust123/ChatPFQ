@@ -1,7 +1,12 @@
-const { client, close } = require("../db/connection");
 const app = require("../app");
 const request = require("supertest");
-const { seedDB } = require("../db/seed");
+
+const { connect, close } = require('../db/connection');
+const { seedDB } = require('../db/seed');
+
+beforeAll(async () => {
+  await connect();
+});
 
 beforeEach(async () => {
   await seedDB();
@@ -104,7 +109,6 @@ describe("getAllMessagesFromUser", () => {
     const { body } = await request(app)
     .get("/api/messages?username=banana")
     .expect(404);
-    console.log(body);
 
     expect(body.msg).toBe(
        'No messages found for user: banana'
@@ -137,7 +141,6 @@ describe('getAllMessagesBycategory', () => {
         const { body } = await request(app)
         .get("/api/messages?category=banana")
         .expect(404);
-        console.log(body);
     
         expect(body.msg).toBe(
            'No messages found for category: banana'

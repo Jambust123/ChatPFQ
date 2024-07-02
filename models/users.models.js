@@ -1,7 +1,8 @@
-const { client } = require("../db/connection");
+const { getClient } = require("../db/connection");
 
 exports.createUser = async (username, password, isAdmin) => {
   try {
+    const client = getClient();
     const db = client.db("ChatPFQ");
     const collection = db.collection("users");
     const insertedUser = await collection.insertOne({
@@ -11,38 +12,35 @@ exports.createUser = async (username, password, isAdmin) => {
     });
     return insertedUser;
   } catch (error) {
-    return Promise.reject(error)
+    throw error;
   }
 };
 
 exports.fetchUsers = async () => {
   try {
+    const client = getClient();
     const db = client.db("ChatPFQ");
     const collection = db.collection("users");
-    const results = collection.find({});
-    return await results.toArray();
+    const results = await collection.find({}).toArray();
+    return results;
   } catch (error) {
-    return Promise.reject(error)
+    throw error;
   }
 };
 
 exports.fetchUserById = async (username) => {
   try {
+    const client = getClient();
     const db = client.db("ChatPFQ");
     const collection = db.collection("users");
-    const result = await collection
-      .find({
-        username: username,
-      })
-      .toArray();
-    if (result.length === 0) {
-      return Promise.reject({
-        status: 404,
-        msg: "User not found"
-      });
+    const result = await collection.findOne({ username });
+
+    if (!result) {
+      throw { status: 404, msg: "User not found" };
     }
-    return result[0];
+
+    return result;
   } catch (error) {
-    return Promise.reject(error)
+    throw error;
   }
 };
