@@ -1,13 +1,12 @@
 // require the necessary libraries
 const { faker } = require("@faker-js/faker");
-const { getClient } = require("./connection");
+const { connect, getClient } = require("./connection");
 
 exports.seedDB = async () => {
 
     try {
         const client = getClient()
-        const db = client.db("ChatPFQ")
-
+        const db = client.db('ChatPFQ')
         const usersCollection = db.collection('users');
         const messagesCollection = db.collection('messages');
 
@@ -23,36 +22,38 @@ exports.seedDB = async () => {
 
         await client.db('ChatPFQ').createCollection('messages')
 
-        function createRandomUser() {
-            const user = {
-                username: faker.internet.userName(),
-                password: faker.internet.password(),
-                isAdmin: faker.datatype.boolean()
+        if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
+            function createRandomUser() {
+                const user = {
+                    username: faker.internet.userName(),
+                    password: faker.internet.password(),
+                    isAdmin: faker.datatype.boolean()
+                }
+    
+                return user
             }
-
-            return user
-        }
-
-        const fakeUsers = faker.helpers.multiple(createRandomUser, {count: 100})
-        await usersCollection.insertMany(fakeUsers)
-
-
-        function createRandomMessage() {
-            const message = {
-                    body: faker.lorem.sentence(),
-                    from: faker.internet.userName(),
-                    to: 'admin',
-                    category: 'Service',
-                    sentiment: 'negative',
-                    isClosed: false,
-                    table: faker.number.bigInt({ min: 1, max: 50 })
+    
+            const fakeUsers = faker.helpers.multiple(createRandomUser, {count: 100})
+            await usersCollection.insertMany(fakeUsers)
+    
+    
+            function createRandomMessage() {
+                const message = {
+                        body: faker.lorem.sentence(),
+                        from: faker.internet.userName(),
+                        to: 'admin',
+                        category: 'Service',
+                        sentiment: 'negative',
+                        isClosed: false,
+                        table: faker.number.bigInt({ min: 1, max: 50 })
+                }
+    
+                return message
             }
-
-            return message
+    
+            const fakeMessages = faker.helpers.multiple(createRandomMessage, {count: 100})
+            await messagesCollection.insertMany(fakeMessages)
         }
-
-        const fakeMessages = faker.helpers.multiple(createRandomMessage, {count: 100})
-        await messagesCollection.insertMany(fakeMessages)
 
     } catch (err) {
         console.log(err.stack);
