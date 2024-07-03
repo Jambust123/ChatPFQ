@@ -1,21 +1,21 @@
 // require the necessary libraries
 const { faker } = require("@faker-js/faker");
-const { client, connect, close } = require('./connection')
+const { getClient } = require("./connection");
 
 exports.seedDB = async () => {
 
     try {
-        await connect();
-        //console.log("Connected correctly to server");
+        const client = getClient()
+        const db = client.db("ChatPFQ")
 
-        const usersCollection = client.db("ChatPFQ").collection('users');
-        const messagesCollection = client.db("ChatPFQ").collection('messages');
+        const usersCollection = db.collection('users');
+        const messagesCollection = db.collection('messages');
 
         // The drop() command destroys all data from a collection and deletes the collection.
         // Make sure you run it against proper database and collection.
 
-        usersCollection.drop(); //dropping all collections in ChatPFQ
-        messagesCollection.drop()
+        await usersCollection.drop(); //dropping all collections in ChatPFQ
+        await messagesCollection.drop()
 
         //Create the collections again, and add an index to the users collection to enforce unique values
         await client.db('ChatPFQ').createCollection('users')
@@ -35,6 +35,24 @@ exports.seedDB = async () => {
 
         const fakeUsers = faker.helpers.multiple(createRandomUser, {count: 100})
         await usersCollection.insertMany(fakeUsers)
+
+
+        function createRandomMessage() {
+            const message = {
+                    body: faker.lorem.sentence(),
+                    from: faker.internet.userName(),
+                    to: 'admin',
+                    category: 'Service',
+                    sentiment: 'negative',
+                    isClosed: false,
+                    table: faker.number.bigInt({ min: 1, max: 50 })
+            }
+
+            return message
+        }
+
+        const fakeMessages = faker.helpers.multiple(createRandomMessage, {count: 100})
+        await messagesCollection.insertMany(fakeMessages)
 
     } catch (err) {
         console.log(err.stack);

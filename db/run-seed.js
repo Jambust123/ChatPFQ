@@ -1,9 +1,10 @@
 const { seedDB } = require("./seed");
-const { close } = require('./connection')
+const { connect, close, getClient } = require('./connection')
 
 async function runSeed() {
-    await seedDB()
-    await close()
+    const client = getClient()
+    await seedDB(client)
+    await close(client)
 }
 
 runSeed();

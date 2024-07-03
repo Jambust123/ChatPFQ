@@ -1,27 +1,40 @@
 const express = require('express')
-const { postUser, getUsers } = require('./controllers/users.controllers')
-const { postMessage } = require('./controllers/messages.controllers')
+const { postUser, getUsers, getUserById } = require('./controllers/users.controllers')
+const { postMessage, getAllMessages } = require('./controllers/messages.controllers')
 
-const app = express()
+const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
-app.get('/api/users', getUsers)
+app.get("/api/users", getUsers);
 
-app.post('/api/users', postUser)
+app.get("/api/users/:username", getUserById);
+
+app.post("/api/users", postUser);
 
 app.post(`/api/messages`, postMessage)
 
+app.get('/api/messages', getAllMessages)
+
 app.use((error, req, res, next) => {
-    const { errorResponse } = error
+  if (error.errorResponse) {
+    const { errorResponse } = error;
 
     if (errorResponse.code === 11000) {
-        res.status(400).send({
-            msg: 'Username already taken'
-        })
+      res.status(400).send("Username already taken");
     }
+  }
 
-    next(error)
-})
+  next(error);
+});
 
-module.exports = app
+// custom error handler
+app.use((error, req, res, next) => {
+  if (error.status && error.msg) {
+    res.status(error.status).send(error.msg);
+  }
+
+  next(error);
+});
+
+module.exports = app;
