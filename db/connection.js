@@ -15,28 +15,40 @@ const dbName = "ChatPFQ";
 let client;
 
 async function connect() {
-  if (!client) {
-    client = new MongoClient(mongoUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    await client.connect();
+  try {
+    if (!client) {
+      client = new MongoClient(mongoUri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+      await client.connect();
+    }
+    return client;
+  } catch (error) {
+    throw error
   }
-  return client;
 }
 
 async function close() {
-  if (client) {
-    await client.close();
-    client = undefined;
+  try {
+    if (client) {
+      await client.close();
+      client = undefined;
+    }
+  } catch (error) {
+    throw error
   }
 }
 
 function getClient() {
-  if (!client) {
-    throw new Error('MongoDB client is not initialized.');
+  try {
+    if (!client) {
+      throw new Error('MongoDB client is not initialized.');
+    }
+    return client;
+  } catch (error) {
+    throw error
   }
-  return client;
 }
 
 module.exports = {
