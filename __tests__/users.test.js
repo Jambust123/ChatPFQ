@@ -4,16 +4,10 @@ const request = require("supertest");
 const { connect, close } = require('../db/connection');
 const { seedDB } = require('../db/seed');
 
-beforeAll(async () => {
-  await connect();
-});
-
 beforeEach(async () => {
+  const client = await connect()
   await seedDB();
-});
-
-afterAll(async () => {
-  await close();
+  await close(client);
 });
 
 describe("postUser", () => {

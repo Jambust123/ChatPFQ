@@ -1,8 +1,8 @@
-const { getClient } = require("../db/connection");
+const { getClient, close, connect } = require("../db/connection");
 
 exports.createUser = async (username, password, isAdmin) => {
   try {
-    const client = getClient();
+    const client = await connect()
     const db = client.db("ChatPFQ");
     const collection = db.collection("users");
     const insertedUser = await collection.insertOne({
@@ -13,24 +13,31 @@ exports.createUser = async (username, password, isAdmin) => {
     return insertedUser;
   } catch (error) {
     throw error;
+  } finally {
+    const client = getClient()
+    close(client)
   }
+
 };
 
 exports.fetchUsers = async () => {
   try {
-    const client = getClient();
+    const client = await connect()
     const db = client.db("ChatPFQ");
     const collection = db.collection("users");
     const results = await collection.find({}).toArray();
     return results;
   } catch (error) {
     throw error;
+  } finally {
+    const client = getClient()
+    close(client)
   }
 };
 
 exports.fetchUserById = async (username) => {
   try {
-    const client = getClient();
+    const client = await connect()
     const db = client.db("ChatPFQ");
     const collection = db.collection("users");
     const result = await collection.findOne({ username });
@@ -42,5 +49,8 @@ exports.fetchUserById = async (username) => {
     return result;
   } catch (error) {
     throw error;
+  } finally {
+    const client = getClient()
+    close(client)
   }
 };
