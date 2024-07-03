@@ -38,9 +38,6 @@ describe("getAllMessages", () => {
   it("should 200 return all messages when requested", async () => {
     const { body } = await request(app).get("/api/messages").expect(200);
 
-    // console.log(body)
-    // console.log(new ObjectId(body[0]._id).getTimestamp())
-
     expect(body).toHaveLength(100);
     body.forEach((user) => {
       expect(user).toMatchObject({
