@@ -7,7 +7,7 @@ exports.createMessage = async (message) => {
     const db = client.db("ChatPFQ");
     const collection = db.collection("messages");
     const insertedMessage = await collection.insertOne({
-      body: message.body,
+      body: JSON.stringify(message.body),
       from: message.from,
       to: message.to,
       created_at: new Date(),
