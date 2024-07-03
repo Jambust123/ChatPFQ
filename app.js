@@ -19,7 +19,7 @@ app.post(`/api/messages`, postMessage)
 app.get('/api/messages', getAllMessages)
 
 app.use((error, req, res, next) => {
-  console.log(error)
+  console.log(error, "from first error handler")
   if (error.errorResponse) {
     const { errorResponse } = error;
 
@@ -33,6 +33,7 @@ app.use((error, req, res, next) => {
 
 // custom error handler
 app.use((error, req, res, next) => {
+  console.log(error, "from second error handler")
   if (error.status && error.msg) {
     res.status(error.status).send(error.msg);
   }
