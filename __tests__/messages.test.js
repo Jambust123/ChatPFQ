@@ -3,6 +3,7 @@ const request = require("supertest");
 
 const { connect, close } = require('../db/connection');
 const { seedDB } = require('../db/seed');
+const { ObjectId } = require("mongodb");
 
 beforeEach(async () => {
   const client = await connect()
@@ -20,7 +21,7 @@ describe("postMessage", () => {
         category: "Service",
         sentiment: "negative",
         isClosed: false,
-        table: 12,
+        table: 12
       },
     };
 
@@ -39,6 +40,9 @@ describe("getAllMessages", () => {
   it("should 200 return all messages when requested", async () => {
     const { body } = await request(app).get("/api/messages").expect(200);
 
+    // console.log(body)
+    // console.log(new ObjectId(body[0]._id).getTimestamp())
+
     expect(body).toHaveLength(100);
     body.forEach((user) => {
       expect(user).toMatchObject({
@@ -50,6 +54,7 @@ describe("getAllMessages", () => {
         sentiment: "negative",
         isClosed: expect.any(Boolean),
         table: expect.any(Number),
+        created_at: expect.any(String)
       });
     });
   });

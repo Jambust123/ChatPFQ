@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const { connect, getClient, close } = require("../db/connection");
 
 exports.createMessage = async (message) => {
@@ -39,11 +40,25 @@ exports.fetchAllMessages = async (username, category) => {
 
     const allMessages = await collection.find(query).toArray();
 
-    if ((username || category) && allMessages.length === 0) {
+    const formattedMessages = allMessages.map((message) => {
+      return {
+        _id: message._id,
+        body: message.body,
+        from: message.from,
+        to: message.to,
+        category: message.category,
+        sentiment: message.sentiment,
+        isClosed: message.isClosed,
+        table: message.table,
+        created_at: new ObjectId(message._id).getTimestamp()
+      }
+    })
+
+    if ((username || category) && formattedMessages.length === 0) {
       throw { status: 404, msg: `No messages found for ${username ? `user: ${username}` : `category: ${category}`}` };
     }
 
-    return allMessages;
+    return formattedMessages;
   } catch (error) {
     throw error;
   } finally {
