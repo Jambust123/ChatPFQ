@@ -15,14 +15,20 @@ const dbName = "ChatPFQ";
 let client;
 
 async function connect() {
-  if (!client) {
-    client = new MongoClient(mongoUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    await client.connect();
+  try {
+    console.log('trying to create a client')
+    if (!client) {
+      client = new MongoClient(mongoUri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+      await client.connect();
+      console.log(client, '<<<< the client inside connection.js')
+    }
+    return client;
+  } catch (error) {
+    throw error
   }
-  return client;
 }
 
 async function close() {
