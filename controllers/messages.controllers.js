@@ -5,8 +5,8 @@ const {
 
 exports.postMessage = async (req, res, next) => {
   try {
-    const { message } = req.body;
-    const createdMessage = await createMessage(message);
+    const { body, from, to, category, sentiment, isClosed, table } = req.body;
+    const createdMessage = await createMessage(body, from, to, category, sentiment, isClosed, table);
     res.status(201).send(createdMessage);
   } catch (error) {
     next(error);
