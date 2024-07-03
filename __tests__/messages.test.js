@@ -14,7 +14,6 @@ beforeEach(async () => {
 describe("postMessage", () => {
   it("should 200 when a message is posted", async () => {
     const input = {
-      message: {
         body: `This is a test message`,
         from: "matt",
         to: "admin",
@@ -22,8 +21,7 @@ describe("postMessage", () => {
         sentiment: "negative",
         isClosed: false,
         table: 12
-      },
-    };
+      };
 
     const { body } = await request(app)
       .post("/api/messages")
@@ -63,7 +61,6 @@ describe("getAllMessages", () => {
 describe("getAllMessagesFromUser", () => {
   it("should 200 should return all messages from a specific user", async () => {
     const input = {
-      message: {
         body: `This is a test message`,
         from: "matt",
         to: "admin",
@@ -71,11 +68,9 @@ describe("getAllMessagesFromUser", () => {
         sentiment: "negative",
         isClosed: false,
         table: 12,
-      },
-    };
+      };
 
     const input2 = {
-      message: {
         body: `This is another test message`,
         from: "admin",
         to: "matt",
@@ -83,8 +78,7 @@ describe("getAllMessagesFromUser", () => {
         sentiment: "negative",
         isClosed: false,
         table: 12,
-      },
-    };
+      };
 
     await request(app).post("/api/messages").send(input);
     await request(app).post("/api/messages").send(input2);
