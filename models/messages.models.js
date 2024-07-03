@@ -1,8 +1,8 @@
-const { getClient } = require("../db/connection");
+const { connect, getClient, close } = require("../db/connection");
 
 exports.createMessage = async (message) => {
   try {
-    const client = await getClient()
+    const client = await connect()
     const db = client.db("ChatPFQ");
     const collection = db.collection("messages");
     const insertedMessage = await collection.insertOne({
@@ -18,12 +18,15 @@ exports.createMessage = async (message) => {
     return insertedMessage;
   } catch (error) {
     throw error;
+  } finally {
+    const client = getClient()
+    close(client)
   }
 };
 
 exports.fetchAllMessages = async (username, category) => {
   try {
-    const client = await getClient();
+    const client = await connect()
     const db = client.db("ChatPFQ");
     const collection = db.collection("messages");
     let query = {};
@@ -43,5 +46,8 @@ exports.fetchAllMessages = async (username, category) => {
     return allMessages;
   } catch (error) {
     throw error;
+  } finally {
+    const client = getClient()
+    close(client)
   }
 };
