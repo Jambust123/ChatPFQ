@@ -19,6 +19,7 @@ app.post(`/api/messages`, postMessage)
 app.get('/api/messages', getAllMessages)
 
 app.use((error, req, res, next) => {
+  console.log(error)
   if (error.errorResponse) {
     const { errorResponse } = error;
 
