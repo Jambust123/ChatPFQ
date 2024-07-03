@@ -1,9 +1,11 @@
 const express = require('express')
 const { postUser, getUsers, getUserById } = require('./controllers/users.controllers')
 const { postMessage, getAllMessages } = require('./controllers/messages.controllers')
+const cors = require('cors')
 
 const app = express();
 
+app.use(cors())
 app.use(express.json());
 
 app.get("/api/users", getUsers);
