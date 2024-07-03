@@ -2,9 +2,7 @@ const { getClient, close, connect } = require("../db/connection");
 
 exports.createUser = async (username, password, isAdmin) => {
   try {
-    console.log('createUser invoked')
     const client = await connect()
-    console.log(client, '<<< client')
     const db = client.db("ChatPFQ");
     const collection = db.collection("users");
     const insertedUser = await collection.insertOne({
@@ -12,7 +10,6 @@ exports.createUser = async (username, password, isAdmin) => {
       password,
       isAdmin,
     });
-    console.log(insertedUser, '<<<< insertedUser')
     return insertedUser;
   } catch (error) {
     throw error;

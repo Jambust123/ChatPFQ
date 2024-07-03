@@ -16,14 +16,12 @@ let client;
 
 async function connect() {
   try {
-    console.log('trying to create a client')
     if (!client) {
       client = new MongoClient(mongoUri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
       await client.connect();
-      console.log(client, '<<<< the client inside connection.js')
     }
     return client;
   } catch (error) {
@@ -32,17 +30,25 @@ async function connect() {
 }
 
 async function close() {
-  if (client) {
-    await client.close();
-    client = undefined;
+  try {
+    if (client) {
+      await client.close();
+      client = undefined;
+    }
+  } catch (error) {
+    throw error
   }
 }
 
 function getClient() {
-  if (!client) {
-    throw new Error('MongoDB client is not initialized.');
+  try {
+    if (!client) {
+      throw new Error('MongoDB client is not initialized.');
+    }
+    return client;
+  } catch (error) {
+    throw error
   }
-  return client;
 }
 
 module.exports = {
