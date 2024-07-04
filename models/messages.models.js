@@ -1,9 +1,18 @@
 const { ObjectId } = require("mongodb");
 const { connect, getClient, close } = require("../db/connection");
 
-exports.createMessage = async (body, from, to, category, sentiment, isClosed, table) => {
+exports.createMessage = async (
+  body,
+  from,
+  to,
+  category,
+  sentiment,
+  isClosed,
+  table,
+  created_at
+) => {
   try {
-    const client = await connect()
+    const client = await connect();
     const db = client.db("ChatPFQ");
     const collection = db.collection("messages");
     const insertedMessage = await collection.insertOne({
@@ -14,19 +23,20 @@ exports.createMessage = async (body, from, to, category, sentiment, isClosed, ta
       sentiment,
       isClosed,
       table,
+      created_at,
     });
     return insertedMessage;
   } catch (error) {
     throw error;
   } finally {
-    const client = getClient()
-    close(client)
+    const client = getClient();
+    close(client);
   }
 };
 
 exports.fetchAllMessages = async (username, category) => {
   try {
-    const client = await connect()
+    const client = await connect();
     const db = client.db("ChatPFQ");
     const collection = db.collection("messages");
     let query = {};
@@ -49,19 +59,26 @@ exports.fetchAllMessages = async (username, category) => {
         sentiment: message.sentiment,
         isClosed: message.isClosed,
         table: message.table,
-        created_at: new ObjectId(message._id).getTimestamp()
-      }
-    })
+        created_at: message.created_at,
+      };
+    });
+
+    console.log(formattedMessages[0]);
 
     if ((username || category) && formattedMessages.length === 0) {
-      throw { status: 404, msg: `No messages found for ${username ? `user: ${username}` : `category: ${category}`}` };
+      throw {
+        status: 404,
+        msg: `No messages found for ${
+          username ? `user: ${username}` : `category: ${category}`
+        }`,
+      };
     }
 
     return formattedMessages;
   } catch (error) {
     throw error;
   } finally {
-    const client = getClient()
-    close(client)
+    const client = getClient();
+    close(client);
   }
 };
