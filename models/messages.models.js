@@ -63,8 +63,6 @@ exports.fetchAllMessages = async (username, category) => {
       };
     });
 
-    console.log(formattedMessages[0]);
-
     if ((username || category) && formattedMessages.length === 0) {
       throw {
         status: 404,
