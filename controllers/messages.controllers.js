@@ -7,6 +7,7 @@ exports.postMessage = async (req, res, next) => {
   try {
     const { body, from, to, category, sentiment, isClosed, table, created_at } =
       req.body;
+    console.log(created_at, "created_at in the controller fron req.body");
     const createdMessage = await createMessage(
       body,
       from,
@@ -16,6 +17,10 @@ exports.postMessage = async (req, res, next) => {
       isClosed,
       table,
       created_at
+    );
+    console.log(
+      createdMessage,
+      "whole message from controller after the model"
     );
     res.status(201).send(createdMessage);
   } catch (error) {
