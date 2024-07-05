@@ -49,7 +49,7 @@ exports.seedDB = async () => {
           sentiment: "negative",
           isClosed: false,
           table: faker.number.bigInt({ min: 1, max: 50 }),
-          created_at: new Date(),
+          created_at: JSON.stringify(new Date()),
         };
 
         return message;

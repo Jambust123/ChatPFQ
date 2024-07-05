@@ -11,6 +11,7 @@ exports.createMessage = async (
   table,
   created_at
 ) => {
+  console.log(created_at, "<<<<<<<<<checking created_at gets to the function");
   try {
     const client = await connect();
     const db = client.db("ChatPFQ");
@@ -25,6 +26,7 @@ exports.createMessage = async (
       table,
       created_at,
     });
+    console.log(insertedMessage, "<<<<<<<<<<the whole message being returned");
     return insertedMessage;
   } catch (error) {
     throw error;
