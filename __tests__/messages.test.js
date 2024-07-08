@@ -11,7 +11,7 @@ beforeEach(async () => {
   await close(client);
 });
 
-describe.only("postMessage", () => {
+describe("postMessage", () => {
   it("should 200 when a message is posted", async () => {
     const input = {
       body: `This is a test message`,
