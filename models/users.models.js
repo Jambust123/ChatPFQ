@@ -37,7 +37,7 @@ exports.fetchUsers = async () => {
 
 exports.fetchUserById = async (username) => {
   try {
-    const client = await connect()
+    const client = await getClient()
     const db = client.db("ChatPFQ");
     const collection = db.collection("users");
     const result = await collection.findOne({ username });
