@@ -41,6 +41,7 @@ async function close() {
 }
 
 function getClient() {
+  console.log(client, 'client from get client')
   try {
     if (!client) {
       throw new Error('MongoDB client is not initialized.');
