@@ -3,7 +3,6 @@ const request = require("supertest");
 
 const { connect, close } = require("../db/connection");
 const { seedDB } = require("../db/seed");
-const { ObjectId } = require("mongodb");
 
 beforeEach(async () => {
   const client = await connect();

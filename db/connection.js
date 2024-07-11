@@ -17,11 +17,10 @@ let client;
 async function connect() {
   try {
     if (!client) {
-      client = new MongoClient(mongoUri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-      await client.connect();
+      client = await getClient()
+      await client.connect()
+    } else {
+      await client.connect()
     }
     return client;
   } catch (error) {
@@ -40,10 +39,14 @@ async function close() {
   }
 }
 
-function getClient() {
+async function getClient() {
   try {
     if (!client) {
-      throw new Error('MongoDB client is not initialized.');
+      client = new MongoClient(mongoUri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+      return client
     }
     return client;
   } catch (error) {

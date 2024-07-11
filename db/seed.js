@@ -4,7 +4,7 @@ const { connect, getClient } = require("./connection");
 
 exports.seedDB = async () => {
   try {
-    const client = getClient();
+    const client = await getClient();
     const db = client.db("ChatPFQ");
     const usersCollection = db.collection("users");
     const messagesCollection = db.collection("messages");
