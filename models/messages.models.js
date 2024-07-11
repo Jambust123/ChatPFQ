@@ -76,9 +76,7 @@ exports.fetchAllMessages = async (username, category) => {
   } catch (error) {
     throw error;
   } finally {
-    console.log('going to get the client')
     const client = getClient();
-    console.log(client, 'client from fetch all')
     close(client);
   }
 };
