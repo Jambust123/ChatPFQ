@@ -25,7 +25,6 @@ exports.postMessage = async (req, res, next) => {
 };
 
 exports.getAllMessages = async (req, res, next) => {
-  console.log("getting requests");
   try {
     const { username, category } = req.query;
     const messages = await fetchAllMessages(username, category);
