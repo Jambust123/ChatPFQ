@@ -36,7 +36,9 @@ exports.createMessage = async (
 
 exports.fetchAllMessages = async (username, category) => {
   try {
+    console.log('going to get client')
     const client = await connect();
+    console.log('got the client')
     const db = client.db("ChatPFQ");
     const collection = db.collection("messages");
     let query = {};
