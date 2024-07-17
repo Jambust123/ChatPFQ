@@ -36,3 +36,11 @@ You will need to run npm run seed-prod to set up the prod databases, with unique
 The API is accessibile [here](https://chatpfq-api.onrender.com/api/), on the following endpoints:
 - /users
 - /messages
+
+## Sibling repos
+
+In order to run Chat PFQ, you will also need the following repos:
+
+- [Server](https://github.com/mjj677/chat-pfq-server), for instant messaging and ML driven message categorisation
+- [Web app](https://github.com/mjj677/chat-pfq-web-app), for the admin portal
+- [React Native app](https://github.com/rambatinoo/chat-pfq-native-app), for the customer portal
