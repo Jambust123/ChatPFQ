@@ -4,7 +4,7 @@ AI query sorting system
 ## Demo
 
 See a demo of the application by pressing the thumbnail below:
-![Screenshot from demo video displaying the iPhone and web app](/demo/thumbnail.png)
+[![Screenshot from demo video displaying the iPhone and web app](/demo/thumbnail.png)]([link_url](https://github.com/Jambust123/ChatPFQ-API/tree/main/demo))
 
 ## Envrionment variables
 
